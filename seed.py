@@ -271,8 +271,8 @@ def search_products(db, category=None, search=None, sort="popular",
         sql += " AND c.slug = ?"
         params.append(category)
     if search:
-        sql += " AND (p.name LIKE ? OR p.description LIKE ? OR p.material LIKE ?)"
-        like = f"%{query}%"
+        sql += " AND (LOWER(p.name) LIKE ? OR LOWER(p.description) LIKE ? OR LOWER(p.material) LIKE ?)"
+        like = f"%{search.lower()}%"
         params.extend([like, like, like])
     if price_min is not None:
         sql += " AND p.price >= ?"
