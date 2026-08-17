@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Furnio — магазин качественной мебели. Диваны, кресла, столы, кровати и шкафы с доставкой по всей России.">
+  <title>{% block title %}Furnio — мебель для дома{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛋️</text></svg>">
+</head>
+<body>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a href="{{ url_for('index') }}" class="logo" aria-label="Furnio — на главную">
+        <span class="logo-mark">F</span>
+        <span class="logo-text">Furnio</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Основная навигация">
+        <a href="{{ url_for('catalog') }}" class="nav-link">Каталог</a>
+        <a href="{{ url_for('about') }}" class="nav-link">О нас</a>
+        <a href="{{ url_for('contacts') }}" class="nav-link">Контакты</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="{{ url_for('cart') }}" class="cart-btn" aria-label="Корзина">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="22" height="22">
+            <path d="M6 7h12l1 13H5L6 7Z" stroke-linejoin="round"/>
+            <path d="M9 10V6a3 3 0 0 1 6 0v4"/>
+          </svg>
+          <span class="cart-count" id="cartCount">{{ cart_count }}</span>
+        </a>
+        <button class="burger" id="burgerBtn" aria-label="Открыть меню" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="{{ url_for('catalog') }}">Каталог</a>
+      <a href="{{ url_for('about') }}">О нас</a>
+      <a href="{{ url_for('contacts') }}">Контакты</a>
+      <a href="{{ url_for('cart') }}">Корзина</a>
+    </div>
+  </header>
+
+  <main>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-wrap">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-col">
+        <a href="{{ url_for('index') }}" class="logo footer-logo">
+          <span class="logo-mark">F</span>
+          <span class="logo-text">Furnio</span>
+        </a>
+        <p class="footer-desc">Мебель для комфортной жизни. Собственное производство, честные цены и забота о каждом клиенте.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Telegram">TG</a>
+          <a href="#" aria-label="VK">VK</a>
+          <a href="#" aria-label="WhatsApp">WA</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Каталог</h4>
+        <ul>
+          {% for cat in categories %}
+            <li><a href="{{ url_for('category', slug=cat['slug']) }}">{{ cat['name'] }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Покупателям</h4>
+        <ul>
+          <li><a href="{{ url_for('catalog') }}">Все товары</a></li>
+          <li><a href="{{ url_for('about') }}">Доставка и оплата</a></li>
+          <li><a href="{{ url_for('about') }}">Гарантия</a></li>
+          <li><a href="{{ url_for('contacts') }}">Контакты</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Контакты</h4>
+        <ul>
+          <li><a href="tel:+74950000000">+7 (495) 000-00-00</a></li>
+          <li><a href="mailto:hello@furnio.ru">hello@furnio.ru</a></li>
+          <li>г. Москва, ул. Мебельная, 12</li>
+          <li>Ежедневно 10:00 — 21:00</li>
+        </ul>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© {{ current_year }} Furnio. Все права защищены.</span>
+      <span>Сделано с заботой о деталях</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

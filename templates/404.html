@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Страница не найдена — Furnio{% endblock %}
+
+{% block content %}
+
+<section class="section">
+  <div class="container error-wrap">
+    <div class="error-code">404</div>
+    <h1>Страница не найдена</h1>
+    <p>Похоже, эта страница переехала или была удалена. Загляните в каталог — там точно есть что-то для вас.</p>
+    <div class="success-actions">
+      <a href="{{ url_for('catalog') }}" class="btn btn-primary">Перейти в каталог</a>
+      <a href="{{ url_for('index') }}" class="btn btn-ghost">На главную</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

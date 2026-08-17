@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}О нас — Furnio{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="{{ url_for('index') }}">Главная</a>
+      <span>→</span>
+      <span class="current">О нас</span>
+    </nav>
+    <h1>О компании Furnio</h1>
+    <p class="page-hero-sub">Мы делаем мебель, которой пользуются каждый день</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container about-grid">
+    <div class="about-text">
+      <span class="section-kicker">Наша история</span>
+      <h2>12 лет делаем мебель<br>для настоящей жизни</h2>
+      <p>Furnio начался с небольшой мастерской и твёрдого убеждения: мебель должна служить десятилетиями, а не сезонами. Сегодня у нас собственная фабрика в Московской области и 48 000 семей, которые доверяют нам каждый день.</p>
+      <p>Мы не гонимся за количеством моделей. Вместо этого мы годами доводим каждую модель до совершенства: от чертежа до упаковки. Каждое изделие проходит многоступенчатый контроль качества перед отправкой.</p>
+      <div class="about-stats">
+        <div><strong>12</strong><span>лет производства</span></div>
+        <div><strong>48 000+</strong><span>довольных клиентов</span></div>
+        <div><strong>36 мес.</strong><span>максимальная гарантия</span></div>
+        <div><strong>95%</strong><span>рекомендуют нас</span></div>
+      </div>
+    </div>
+    <div class="about-image">
+      <svg viewBox="0 0 600 480">
+        <defs>
+          <linearGradient id="abg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#e8d5c3"/>
+            <stop offset="100%" stop-color="#c98a5f"/>
+          </linearGradient>
+        </defs>
+        <rect width="600" height="480" fill="url(#abg)" rx="24"/>
+        <rect x="110" y="300" width="380" height="86" rx="20" fill="#5a5148"/>
+        <rect x="110" y="220" width="380" height="90" rx="20" fill="#5a5148"/>
+        <rect x="78" y="262" width="40" height="124" rx="14" fill="#5a5148"/>
+        <rect x="482" y="262" width="40" height="124" rx="14" fill="#5a5148"/>
+        <rect x="140" y="268" width="150" height="58" rx="12" fill="#3f7d7c"/>
+        <rect x="310" y="268" width="150" height="58" rx="12" fill="#e9c0a6"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tinted">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="section-kicker">Как мы работаем</span>
+        <h2>Доставка и оплата</h2>
+      </div>
+    </div>
+    <div class="steps-grid">
+      <div class="step">
+        <span class="step-num">01</span>
+        <h3>Заказ</h3>
+        <p>Оформите заказ на сайте или по телефону. Менеджер подтвердит его и согласует удобное время.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">02</span>
+        <h3>Производство</h3>
+        <p>Большинство товаров в наличии. Если изделия нет — изготовим его на фабрике за 10–14 дней.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">03</span>
+        <h3>Доставка</h3>
+        <p>Привезём до подъезда бесплатно при заказе от 30 000 ₽. Подъём и занос в квартиру — по запросу.</p>
+      </div>
+      <div class="step">
+        <span class="step-num">04</span>
+        <h3>Сборка и гарантия</h3>
+        <p>Мастера соберут мебель и уберут упаковку. Гарантия — от 12 до 36 месяцев в зависимости от модели.</p>
+      </div>
+    </div>
+    <div class="payment-info">
+      <p>Оплата: банковской картой онлайн, наличными или картой курьеру, переводом для юридических лиц.</p>
+      <p>Возврат: если мебель не подошла — вернём деньги в течение 14 дней с момента покупки.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

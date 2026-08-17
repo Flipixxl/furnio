@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+
+# Runtime data (SQLite DB is recreated on startup)
+instance/
+
+# Generated images (recreated on startup)
+static/img/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Cloudflare tunnel local files
+tools/
+cloudflared.log
+cloudflared.out.log
+public_url.txt
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

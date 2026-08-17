@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Заказ оформлен — Furnio{% endblock %}
+
+{% block content %}
+
+<section class="section">
+  <div class="container success-wrap">
+    <div class="success-card">
+      <div class="success-icon">✓</div>
+      <h1>Спасибо, {{ order['name'].split(' ')[0] }}!</h1>
+      <p>Ваш заказ <strong>№{{ order['id'] }}</strong> принят. Менеджер свяжется с вами в течение 15 минут в рабочее время для подтверждения.</p>
+
+      <div class="success-details">
+        <div><span>Телефон</span><strong>{{ order['phone'] }}</strong></div>
+        <div><span>Адрес доставки</span><strong>{{ order['address'] }}</strong></div>
+        <div><span>Способ оплаты</span><strong>{% if order['payment'] == 'card' %}Картой онлайн{% else %}Наличными курьеру{% endif %}</strong></div>
+        <div><span>Дата заказа</span><strong>{{ order['created_at'] | date_ru }}</strong></div>
+      </div>
+
+      <div class="success-items">
+        {% for item in order['items'] %}
+          <div class="success-item">
+            <span>{{ item['name'] }}</span>
+            <span>× {{ item['qty'] }}</span>
+            <span>{{ (item['price'] * item['qty']) | money }}</span>
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="success-total">
+        <span>Итого к оплате</span>
+        <strong>{{ order['total'] | money }}</strong>
+      </div>
+
+      <div class="success-actions">
+        <a href="{{ url_for('catalog') }}" class="btn btn-primary">Продолжить покупки</a>
+        <a href="{{ url_for('index') }}" class="btn btn-ghost">На главную</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

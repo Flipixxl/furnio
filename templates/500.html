@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Ошибка сервера — Furnio{% endblock %}
+
+{% block content %}
+
+<section class="section">
+  <div class="container error-wrap">
+    <div class="error-code">500</div>
+    <h1>Что-то пошло не так</h1>
+    <p>Произошла внутренняя ошибка. Мы уже знаем о проблеме и чиним её. Попробуйте обновить страницу чуть позже.</p>
+    <div class="success-actions">
+      <a href="{{ url_for('index') }}" class="btn btn-primary">На главную</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+{% block title %}Furnio — качественная мебель для дома{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <span class="hero-badge">Новая коллекция 2026</span>
+      <h1>Мебель, которая<br>делает дом <em>живым</em></h1>
+      <p>Собственное производство, натуральные материалы и дизайн, проверенный временем. Создайте интерьер, в который хочется возвращаться.</p>
+      <div class="hero-cta">
+        <a href="{{ url_for('catalog') }}" class="btn btn-primary">Смотреть каталог</a>
+        <a href="{{ url_for('catalog') }}?sort=new" class="btn btn-ghost">Новинки</a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>12 лет</strong><span>производим мебель</span></div>
+        <div><strong>48 000+</strong><span>счастливых семей</span></div>
+        <div><strong>4.9/5</strong><span>средняя оценка</span></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card hero-card-main">
+        <svg viewBox="0 0 800 600" class="hero-img">
+          <defs>
+            <linearGradient id="heroBg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e8d5c3"/>
+              <stop offset="100%" stop-color="#d4b49a"/>
+            </linearGradient>
+          </defs>
+          <rect width="800" height="600" fill="url(#heroBg)" rx="28"/>
+          <rect x="140" y="320" width="520" height="120" rx="26" fill="#5a5148"/>
+          <rect x="140" y="160" width="520" height="180" rx="26" fill="#5a5148"/>
+          <rect x="86" y="228" width="62" height="214" rx="22" fill="#5a5148"/>
+          <rect x="652" y="228" width="62" height="214" rx="22" fill="#5a5148"/>
+          <rect x="182" y="292" width="218" height="92" rx="16" fill="#c98a5f" opacity="0.92"/>
+          <rect x="418" y="292" width="200" height="92" rx="16" fill="#3f7d7c" opacity="0.92"/>
+          <rect x="252" y="128" width="130" height="62" rx="22" fill="#e9c0a6"/>
+          <rect x="486" y="126" width="120" height="56" rx="20" fill="#cfe0da"/>
+          <rect x="180" y="440" width="18" height="30" rx="5" fill="#3a322c"/>
+          <rect x="602" y="440" width="18" height="30" rx="5" fill="#3a322c"/>
+        </svg>
+      </div>
+      <div class="hero-card hero-card-mini">
+        <span class="mini-title">Диван «Модерн»</span>
+        <span class="mini-price">89 900 ₽</span>
+        <a href="{{ url_for('catalog') }}?category=divany" class="mini-link">Подробнее →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="benefits">
+  <div class="container benefits-grid">
+    <div class="benefit">
+      <div class="benefit-icon">🚚</div>
+      <h3>Бесплатная доставка</h3>
+      <p>По Москве и области — при заказе от 30 000 ₽. До подъезда и до двери.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">🛠️</div>
+      <h3>Гарантия до 3 лет</h3>
+      <p>Собственное производство позволяет нам отвечать за качество.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">↩️</div>
+      <h3>Возврат 14 дней</h3>
+      <p>Не подошло — вернём деньги без лишних вопросов и бюрократии.</p>
+    </div>
+    <div class="benefit">
+      <div class="benefit-icon">🏠</div>
+      <h3>Сборка и подъём</h3>
+      <p>Мастера соберут мебель и уберут упаковку за собой.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="section-kicker">Каталог</span>
+        <h2>Популярные категории</h2>
+      </div>
+      <a href="{{ url_for('catalog') }}" class="btn btn-ghost btn-sm">Все товары →</a>
+    </div>
+    <div class="categories-grid">
+      {% for cat in categories %}
+        <a href="{{ url_for('category', slug=cat['slug']) }}" class="category-card">
+          <img src="{{ url_for('static', filename='img/' + cat['image']) }}" alt="{{ cat['name'] }}" loading="lazy">
+          <div class="category-card-body">
+            <h3>{{ cat['name'] }}</h3>
+            <p>{{ cat['description'] }}</p>
+            <span class="category-link">Перейти →</span>
+          </div>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-tinted">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="section-kicker">Выбор клиентов</span>
+        <h2>Хиты продаж</h2>
+      </div>
+      <a href="{{ url_for('catalog') }}?sort=popular" class="btn btn-ghost btn-sm">Смотреть все →</a>
+    </div>
+    <div class="products-grid">
+      {% set products = featured %}
+      {% include "_product_card.html" %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="section-kicker">Свежее поступление</span>
+        <h2>Новинки</h2>
+      </div>
+      <a href="{{ url_for('catalog') }}?sort=new" class="btn btn-ghost btn-sm">Все новинки →</a>
+    </div>
+    <div class="products-grid">
+      {% for p in new_arrivals %}
+        {% with %}
+          {% set item = p %}
+          {% include "_product_card.html" %}
+        {% endwith %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="promo">
+  <div class="container promo-inner">
+    <div>
+      <span class="section-kicker promo-kicker">Акция месяца</span>
+      <h2>Диван «Модерн» —<br>со скидкой 18%</h2>
+      <p>До конца месяца трёхместный диван из новой коллекции доступен по специальной цене. Успейте обновить гостиную.</p>
+      <a href="{{ url_for('catalog') }}?category=divany" class="btn btn-primary btn-light">Выбрать диван</a>
+    </div>
+    <div class="promo-visual">
+      <span class="promo-discount">−18%</span>
+      <svg viewBox="0 0 400 300">
+        <rect x="40" y="150" width="320" height="80" rx="20" fill="#6b5f53"/>
+        <rect x="40" y="60" width="320" height="100" rx="20" fill="#6b5f53"/>
+        <rect x="22" y="100" width="30" height="130" rx="12" fill="#6b5f53"/>
+        <rect x="348" y="100" width="30" height="130" rx="12" fill="#6b5f53"/>
+        <rect x="70" y="130" width="130" height="56" rx="12" fill="#c98a5f"/>
+        <rect x="215" y="130" width="115" height="56" rx="12" fill="#3f7d7c"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container testimonials">
+    <div class="section-head">
+      <div>
+        <span class="section-kicker">Отзывы</span>
+        <h2>Что говорят клиенты</h2>
+      </div>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>«Заказывали угловой диван „Грэйс". Привезли за 5 дней, собрали за час. Качество на высоте, ткань плотная, механизм работает безупречно.»</p>
+        <div class="testimonial-author">
+          <span class="avatar" style="--avatar:#c98a5f">А</span>
+          <div><strong>Анна М.</strong><span>Москва</span></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>«Кровать „Винтаж" — мечта. Собрана идеально, ламели ровные, ничего не скрипит. Отдельное спасибо за аккуратную доставку в квартиру.»</p>
+        <div class="testimonial-author">
+          <span class="avatar" style="--avatar:#3f7d7c">Д</span>
+          <div><strong>Дмитрий К.</strong><span>Санкт-Петербург</span></div>
+        </div>
+      </div>
+      <div class="testimonial">
+        <div class="stars">★★★★★</div>
+        <p>«Покупали обеденный стол „Оак" и стулья. Настоящий массив, запах дерева, очень добротно. Однозначно рекомендую этот магазин.»</p>
+        <div class="testimonial-author">
+          <span class="avatar" style="--avatar:#5b5f97">Е</span>
+          <div><strong>Елена В.</strong><span>Казань</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-strip">
+  <div class="container cta-inner">
+    <h2>Не знаете, что выбрать?</h2>
+    <p>Позвоните нам — подберём мебель под ваш интерьер и бюджет.</p>
+    <div class="cta-buttons">
+      <a href="tel:+74950000000" class="btn btn-primary btn-light">+7 (495) 000-00-00</a>
+      <a href="{{ url_for('contacts') }}" class="btn btn-ghost btn-light-border">Связаться с нами</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

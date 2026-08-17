@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Корзина — Furnio{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="{{ url_for('index') }}">Главная</a>
+      <span>→</span>
+      <span class="current">Корзина</span>
+    </nav>
+    <h1>Корзина</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if items %}
+      <div class="cart-layout">
+        <div class="cart-items">
+          {% for item in items %}
+            <article class="cart-item">
+              <a href="{{ url_for('product', slug=item['slug']) }}" class="cart-item-media">
+                <img src="{{ url_for('static', filename='img/' + item['image']) }}" alt="{{ item['name'] }}">
+              </a>
+              <div class="cart-item-info">
+                <span class="product-category">{{ item['category_name'] }}</span>
+                <h3><a href="{{ url_for('product', slug=item['slug']) }}">{{ item['name'] }}</a></h3>
+                <span class="cart-item-price">{{ item['price'] | money }} за шт.</span>
+              </div>
+              <form method="post" action="{{ url_for('cart_update', product_id=item['id']) }}" class="qty-stepper">
+                <button type="submit" name="qty" value="{{ item['qty'] - 1 }}" data-qty-minus aria-label="Уменьшить">−</button>
+                <span class="qty-value">{{ item['qty'] }}</span>
+                <button type="submit" name="qty" value="{{ item['qty'] + 1 }}" data-qty-plus aria-label="Увеличить">+</button>
+              </form>
+              <div class="cart-item-total">{{ item['subtotal'] | money }}</div>
+              <form method="post" action="{{ url_for('cart_remove', product_id=item['id']) }}">
+                <button type="submit" class="cart-item-remove" aria-label="Удалить">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20">
+                    <path d="M4 7h16M9 7V4h6v3m-8 0 1 13h8l1-13"/>
+                  </svg>
+                </button>
+              </form>
+            </article>
+          {% endfor %}
+
+          <div class="cart-note">
+            <span>💡</span>
+            <p>Если товар из корзины вам больше не нужен — просто уберите его. Изменения сохраняются автоматически.</p>
+          </div>
+        </div>
+
+        <aside class="cart-summary">
+          <h3>Итого</h3>
+          <div class="summary-row"><span>Товары ({{ items | length }} шт.)</span><span>{{ items | length }} поз.</span></div>
+          <div class="summary-row"><span>Доставка</span><strong>Бесплатно</strong></div>
+          <div class="summary-row"><span>Сборка</span><span>0 ₽</span></div>
+          <div class="summary-total">
+            <span>К оплате</span>
+            <strong>{{ total | money }}</strong>
+          </div>
+          <a href="{{ url_for('checkout') }}" class="btn btn-primary btn-block btn-lg">Оформить заказ</a>
+          <a href="{{ url_for('catalog') }}" class="btn btn-ghost btn-block">Продолжить покупки</a>
+          <div class="summary-trust">
+            <span>🔒</span>
+            <p>Оплата защищена. Мы передаём данные по зашифрованному соединению.</p>
+          </div>
+        </aside>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">🛒</div>
+        <h3>Ваша корзина пуста</h3>
+        <p>Загляните в каталог — там много интересного.</p>
+        <a href="{{ url_for('catalog') }}" class="btn btn-primary">Перейти в каталог</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

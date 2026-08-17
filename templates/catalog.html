@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}{{ category_title or 'Каталог' }} — Furnio{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="{{ url_for('index') }}">Главная</a>
+      <span>→</span>
+      <span class="current">Каталог</span>
+      {% if category_title %}<span>→</span><span class="current">{{ category_title }}</span>{% endif %}
+    </nav>
+    <h1>{% if category_title %}{{ category_title }}{% else %}Каталог мебели{% endif %}</h1>
+    {% if category_title %}
+      <p class="page-hero-sub">{{ total }} товар{{ total | plural_ru }} в категории</p>
+    {% else %}
+      <p class="page-hero-sub">{{ total }} товар{{ total | plural_ru }} в нашем ассортименте</p>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section catalog-section">
+  <div class="container catalog-layout">
+    <aside class="filters" id="filtersPanel">
+      <div class="filters-head">
+        <h3>Фильтры</h3>
+        <button class="filters-close" id="filtersClose" aria-label="Закрыть фильтры">✕</button>
+      </div>
+
+      <form method="get" action="{{ url_for('catalog') }}" class="filters-form" id="filtersForm">
+        <div class="filter-group">
+          <h4>Категория</h4>
+          <label class="radio">
+            <input type="radio" name="category" value="" {% if not active_category %}checked{% endif %}>
+            <span>Все категории</span>
+          </label>
+          {% for cat in categories %}
+            <label class="radio">
+              <input type="radio" name="category" value="{{ cat['slug'] }}" {% if active_category == cat['slug'] %}checked{% endif %}>
+              <span>{{ cat['name'] }}</span>
+            </label>
+          {% endfor %}
+        </div>
+
+        <div class="filter-group">
+          <h4>Цена, ₽</h4>
+          <div class="price-inputs">
+            <input type="number" name="min" min="0" placeholder="от" value="{{ price_min }}">
+            <span>—</span>
+            <input type="number" name="max" min="0" placeholder="до" value="{{ price_max }}">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="checkbox">
+            <input type="checkbox" name="in_stock" value="1" {% if in_stock %}checked{% endif %}>
+            <span>В наличии</span>
+          </label>
+        </div>
+
+        <input type="hidden" name="q" value="{{ q }}">
+        <input type="hidden" name="sort" value="{{ sort }}">
+
+        <button type="submit" class="btn btn-primary btn-block">Применить</button>
+        <a href="{{ url_for('catalog') }}" class="btn btn-ghost btn-block">Сбросить</a>
+      </form>
+    </aside>
+
+    <div class="catalog-main">
+      <div class="catalog-toolbar">
+        <button class="btn btn-ghost btn-sm filters-toggle" id="filtersToggle">⚙ Фильтры</button>
+        <form method="get" action="{{ url_for('catalog') }}" class="search-bar" role="search">
+          <input type="hidden" name="category" value="{{ active_category }}">
+          <input type="hidden" name="min" value="{{ price_min }}">
+          <input type="hidden" name="max" value="{{ price_max }}">
+          <input type="hidden" name="in_stock" value="{{ '1' if in_stock else '' }}">
+          <input type="text" name="q" value="{{ q }}" placeholder="Поиск по названию…" aria-label="Поиск">
+          <button type="submit" aria-label="Искать">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+              <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+            </svg>
+          </button>
+        </form>
+        <form method="get" action="{{ url_for('catalog') }}" class="sort-bar">
+          <input type="hidden" name="category" value="{{ active_category }}">
+          <input type="hidden" name="q" value="{{ q }}">
+          <input type="hidden" name="min" value="{{ price_min }}">
+          <input type="hidden" name="max" value="{{ price_max }}">
+          <input type="hidden" name="in_stock" value="{{ '1' if in_stock else '' }}">
+          <label for="sortSelect">Сортировка:</label>
+          <select name="sort" id="sortSelect" onchange="this.form.submit()">
+            <option value="popular" {% if sort == 'popular' %}selected{% endif %}>Сначала популярные</option>
+            <option value="new" {% if sort == 'new' %}selected{% endif %}>Сначала новинки</option>
+            <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>Дешевле</option>
+            <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>Дороже</option>
+            <option value="name" {% if sort == 'name' %}selected{% endif %}>По алфавиту</option>
+          </select>
+        </form>
+      </div>
+
+      {% if q %}
+        <div class="search-results-info">
+          По запросу «<strong>{{ q }}</strong>» найдено: {{ total }} товар{{ total | plural_ru }}
+        </div>
+      {% endif %}
+
+      <div class="products-grid products-grid-catalog">
+        {% include "_product_card.html" %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

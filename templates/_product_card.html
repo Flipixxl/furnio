@@ -1,0 +1,53 @@
+{% for p in products %}
+  <article class="product-card" data-category="{{ p['category_slug'] }}">
+    <a href="{{ url_for('product', slug=p['slug']) }}" class="product-card-media">
+      <img src="{{ url_for('static', filename='img/' + p['image']) }}" alt="{{ p['name'] }}" loading="lazy">
+      <div class="product-badges">
+        {% if p['old_price'] %}
+          <span class="badge badge-sale">−{{ ((p['old_price'] - p['price']) * 100 // p['old_price']) }}%</span>
+        {% endif %}
+        {% if p['stock'] == 0 %}
+          <span class="badge badge-out">Нет в наличии</span>
+        {% elif p['stock'] <= 3 %}
+          <span class="badge badge-low">Осталось мало</span>
+        {% endif %}
+      </div>
+      {% if p['is_featured'] %}
+        <span class="badge badge-featured">Хит</span>
+      {% endif %}
+    </a>
+    <div class="product-card-body">
+      <span class="product-category">{{ p['category_name'] }}</span>
+      <h3><a href="{{ url_for('product', slug=p['slug']) }}">{{ p['name'] }}</a></h3>
+      <div class="product-meta">
+        <span>{{ p['material'] }}</span>
+        <span>{{ p['dimensions'].split(' × ')[0] }}</span>
+      </div>
+      <div class="product-card-footer">
+        <div class="product-price">
+          {% if p['old_price'] %}
+            <span class="price-old">{{ p['old_price'] | money }}</span>
+          {% endif %}
+          <span class="price-current">{{ p['price'] | money }}</span>
+        </div>
+        <form method="post" action="{{ url_for('cart_add', product_id=p['id']) }}" class="add-form" data-add-form>
+          <input type="hidden" name="next" value="{{ request.full_path or url_for('catalog') }}">
+          <button type="submit" class="btn-icon" {% if p['stock'] == 0 %}disabled{% endif %} aria-label="Добавить в корзину"
+                  title="{% if p['stock'] == 0 %}Нет в наличии{% else %}Добавить в корзину{% endif %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+              <path d="M6 7h12l1 13H5L6 7Z" stroke-linejoin="round"/>
+              <path d="M9 10V6a3 3 0 0 1 6 0v4"/>
+            </svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </article>
+{% else %}
+  <div class="empty-state">
+    <div class="empty-icon">🛋️</div>
+    <h3>Товаров пока нет</h3>
+    <p>Загляните позже или посмотрите другие категории.</p>
+    <a href="{{ url_for('catalog') }}" class="btn btn-primary">В каталог</a>
+  </div>
+{% endfor %}

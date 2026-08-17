@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}{{ product['name'] }} — Furnio{% endblock %}
+
+{% block content %}
+
+<section class="section product-section">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="{{ url_for('index') }}">Главная</a>
+      <span>→</span>
+      <a href="{{ url_for('catalog') }}">Каталог</a>
+      <span>→</span>
+      <a href="{{ url_for('category', slug=product['category_slug']) }}">{{ product['category_name'] }}</a>
+      <span>→</span>
+      <span class="current">{{ product['name'] }}</span>
+    </nav>
+
+    <div class="product-layout">
+      <div class="product-gallery">
+        <div class="product-image-main">
+          <img src="{{ url_for('static', filename='img/' + product['image']) }}" alt="{{ product['name'] }}">
+          <div class="product-badges">
+            {% if product['old_price'] %}
+              <span class="badge badge-sale">−{{ ((product['old_price'] - product['price']) * 100 // product['old_price']) }}%</span>
+            {% endif %}
+            {% if product['is_featured'] %}<span class="badge badge-featured">Хит продаж</span>{% endif %}
+            {% if product['stock'] == 0 %}<span class="badge badge-out">Нет в наличии</span>{% endif %}
+          </div>
+        </div>
+      </div>
+
+      <div class="product-info">
+        <span class="product-category">{{ product['category_name'] }}</span>
+        <h1>{{ product['name'] }}</h1>
+        <div class="product-rating">
+          <span class="stars">★★★★★</span>
+          <span class="rating-count">4.9 · 127 отзывов</span>
+        </div>
+
+        <div class="product-prices">
+          {% if product['old_price'] %}
+            <span class="price-old">{{ product['old_price'] | money }}</span>
+          {% endif %}
+          <span class="price-current product-price-big">{{ product['price'] | money }}</span>
+        </div>
+
+        <div class="product-availability {% if product['stock'] == 0 %}out{% endif %}">
+          {% if product['stock'] > 0 %}
+            <span class="dot"></span> В наличии — {{ product['stock'] }} шт.
+          {% else %}
+            <span class="dot"></span> Нет в наличии
+          {% endif %}
+        </div>
+
+        <p class="product-description">{{ product['description'] }}</p>
+
+        <div class="specs">
+          <div class="spec-row"><span>Материал</span><strong>{{ product['material'] }}</strong></div>
+          <div class="spec-row"><span>Габариты</span><strong>{{ product['dimensions'] }}</strong></div>
+          <div class="spec-row"><span>Гарантия</span><strong>{{ product['warranty'] }}</strong></div>
+        </div>
+
+        <form method="post" action="{{ url_for('cart_add', product_id=product['id']) }}" class="buy-row" data-add-form>
+          <div class="qty-stepper">
+            <button type="button" data-qty-minus aria-label="Уменьшить">−</button>
+            <input type="number" name="qty" value="1" min="1" max="99" data-qty-input>
+            <button type="button" data-qty-plus aria-label="Увеличить">+</button>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg" {% if product['stock'] == 0 %}disabled{% endif %}>
+            {% if product['stock'] == 0 %}Нет в наличии{% else %}В корзину{% endif %}
+          </button>
+          <a href="{{ url_for('checkout') }}" class="btn btn-ghost btn-lg" {% if product['stock'] == 0 %}aria-disabled="true"{% endif %}>
+            Купить в 1 клик
+          </a>
+        </form>
+
+        <ul class="product-perks">
+          <li>🚚 Бесплатная доставка от 30 000 ₽</li>
+          <li>🛠️ Гарантия {{ product['warranty'] }}</li>
+          <li>↩️ Возврат в течение 14 дней</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if related %}
+<section class="section section-tinted">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="section-kicker">Вам может понравиться</span>
+        <h2>Похожие товары</h2>
+      </div>
+      <a href="{{ url_for('category', slug=product['category_slug']) }}" class="btn btn-ghost btn-sm">Вся категория →</a>
+    </div>
+    <div class="products-grid">
+      {% set products = related %}
+      {% include "_product_card.html" %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

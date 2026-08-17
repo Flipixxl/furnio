@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: furnio
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app --workers 1 --threads 4 --timeout 120"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: HOST
+        value: 0.0.0.0

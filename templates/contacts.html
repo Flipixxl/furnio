@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Контакты — Furnio{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Хлебные крошки">
+      <a href="{{ url_for('index') }}">Главная</a>
+      <span>→</span>
+      <span class="current">Контакты</span>
+    </nav>
+    <h1>Контакты</h1>
+    <p class="page-hero-sub">Мы всегда на связи и рады помочь с выбором</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container contacts-grid">
+    <div class="contact-cards">
+      <div class="contact-card">
+        <div class="contact-icon">📞</div>
+        <h3>Телефон</h3>
+        <a href="tel:+74950000000">+7 (495) 000-00-00</a>
+        <span>Ежедневно 10:00 — 21:00</span>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">✉️</div>
+        <h3>Email</h3>
+        <a href="mailto:hello@furnio.ru">hello@furnio.ru</a>
+        <span>Отвечаем в течение часа</span>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📍</div>
+        <h3>Шоурум</h3>
+        <span>г. Москва, ул. Мебельная, 12</span>
+        <span>Пн–Вс с 10:00 до 21:00</span>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">🚚</div>
+        <h3>Фабрика</h3>
+        <span>Московская обл., г. Истра</span>
+        <span>Экскурсии по предварительной записи</span>
+      </div>
+    </div>
+
+    <form class="contact-form" method="post" action="{{ url_for('contacts') }}">
+      <h3>Напишите нам</h3>
+      <p>Оставьте сообщение — ответим в течение рабочего дня.</p>
+      <div class="form-grid">
+        <div class="form-field">
+          <label for="cname">Ваше имя</label>
+          <input type="text" id="cname" name="name" required placeholder="Как к вам обращаться">
+        </div>
+        <div class="form-field">
+          <label for="cphone">Телефон или email</label>
+          <input type="text" id="cphone" name="contact" required placeholder="+7 ___ ___-__-__ или email">
+        </div>
+        <div class="form-field form-field-full">
+          <label for="cmsg">Сообщение</label>
+          <textarea id="cmsg" name="message" rows="5" required placeholder="Чем можем помочь?"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
