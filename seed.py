@@ -208,11 +208,18 @@ def slugify(text):
     return text.strip("-")
 
 
+def _lower_ru(value):
+    if isinstance(value, str):
+        return value.lower()
+    return value
+
+
 def connect_db(app):
     db_path = os.path.join(app.instance_path, "furniture.db")
     os.makedirs(app.instance_path, exist_ok=True)
     db = sqlite3.connect(db_path)
     db.row_factory = sqlite3.Row
+    db.create_function("lower_ru", 1, _lower_ru)
     return db
 
 
@@ -271,7 +278,7 @@ def search_products(db, category=None, search=None, sort="popular",
         sql += " AND c.slug = ?"
         params.append(category)
     if search:
-        sql += " AND (LOWER(p.name) LIKE ? OR LOWER(p.description) LIKE ? OR LOWER(p.material) LIKE ?)"
+        sql += " AND (lower_ru(p.name) LIKE ? OR lower_ru(p.description) LIKE ? OR lower_ru(p.material) LIKE ?)"
         like = f"%{search.lower()}%"
         params.extend([like, like, like])
     if price_min is not None:
