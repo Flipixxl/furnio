@@ -6,68 +6,101 @@
 <section class="hero">
   <div class="container hero-inner">
     <div class="hero-text">
-      <span class="hero-badge">Новая коллекция 2026</span>
-      <h1>Мебель, которая<br>делает дом <em>живым</em></h1>
-      <p>Собственное производство, натуральные материалы и дизайн, проверенный временем. Создайте интерьер, в который хочется возвращаться.</p>
-      <div class="hero-cta">
-        <a href="{{ url_for('catalog') }}" class="btn btn-primary">Смотреть каталог</a>
-        <a href="{{ url_for('catalog') }}?sort=new" class="btn btn-ghost">Новинки</a>
+      <span class="hero-badge reveal">Новая коллекция 2026</span>
+      <h1 class="reveal reveal-delay-1">Мебель, которая<br>делает дом <em>живым</em></h1>
+      <p class="reveal reveal-delay-2">Собственное производство, натуральные материалы и дизайн, проверенный временем. Создайте интерьер, в который хочется возвращаться.</p>
+      <form class="hero-search reveal reveal-delay-3" action="{{ url_for('catalog') }}" role="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+          <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+        </svg>
+        <input type="text" name="q" placeholder="Найти: диван, стол, кресло…" aria-label="Поиск по каталогу">
+        <button type="submit">Найти</button>
+      </form>
+      <div class="hero-cta reveal reveal-delay-4">
+        <a href="{{ url_for('catalog') }}" class="btn btn-primary btn-lg">Смотреть каталог</a>
+        <a href="{{ url_for('catalog') }}?sort=new" class="btn btn-ghost btn-lg">Новинки</a>
       </div>
-      <div class="hero-stats">
-        <div><strong>12 лет</strong><span>производим мебель</span></div>
+      <div class="hero-stats reveal reveal-delay-5">
+        <div><strong>12</strong><span>лет производства</span></div>
         <div><strong>48 000+</strong><span>счастливых семей</span></div>
-        <div><strong>4.9/5</strong><span>средняя оценка</span></div>
+        <div><strong>4.9</strong><span>средняя оценка</span></div>
       </div>
     </div>
-    <div class="hero-visual">
-      <div class="hero-card hero-card-main">
-        <svg viewBox="0 0 800 600" class="hero-img">
+
+    <div class="hero-visual reveal reveal-delay-2">
+      <div class="hero-stage">
+        <div class="hero-stage-bg"></div>
+        <svg viewBox="0 0 800 620" class="hero-img">
           <defs>
-            <linearGradient id="heroBg" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#e8d5c3"/>
-              <stop offset="100%" stop-color="#d4b49a"/>
+            <linearGradient id="heroBg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#efe2d3"/>
+              <stop offset="100%" stop-color="#d9b48f"/>
+            </linearGradient>
+            <linearGradient id="wallShade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f6efe6"/>
+              <stop offset="100%" stop-color="#e9dbca"/>
             </linearGradient>
           </defs>
-          <rect width="800" height="600" fill="url(#heroBg)" rx="28"/>
-          <rect x="140" y="320" width="520" height="120" rx="26" fill="#5a5148"/>
-          <rect x="140" y="160" width="520" height="180" rx="26" fill="#5a5148"/>
-          <rect x="86" y="228" width="62" height="214" rx="22" fill="#5a5148"/>
-          <rect x="652" y="228" width="62" height="214" rx="22" fill="#5a5148"/>
-          <rect x="182" y="292" width="218" height="92" rx="16" fill="#c98a5f" opacity="0.92"/>
-          <rect x="418" y="292" width="200" height="92" rx="16" fill="#3f7d7c" opacity="0.92"/>
-          <rect x="252" y="128" width="130" height="62" rx="22" fill="#e9c0a6"/>
-          <rect x="486" y="126" width="120" height="56" rx="20" fill="#cfe0da"/>
-          <rect x="180" y="440" width="18" height="30" rx="5" fill="#3a322c"/>
-          <rect x="602" y="440" width="18" height="30" rx="5" fill="#3a322c"/>
+          <rect width="800" height="620" fill="url(#heroBg)" rx="36"/>
+          <rect x="0" y="0" width="800" height="330" fill="url(#wallShade)" opacity="0.5" rx="36"/>
+          <rect x="70" y="250" width="240" height="6" rx="3" fill="#c98a5f" opacity="0.5"/>
+          <rect x="600" y="220" width="130" height="6" rx="3" fill="#3f7d7c" opacity="0.5"/>
+          <g>
+            <rect x="150" y="360" width="500" height="120" rx="26" fill="#5a5148"/>
+            <rect x="150" y="200" width="500" height="180" rx="26" fill="#5a5148"/>
+            <rect x="96" y="270" width="62" height="212" rx="22" fill="#5a5148"/>
+            <rect x="642" y="270" width="62" height="212" rx="22" fill="#5a5148"/>
+            <rect x="190" y="330" width="218" height="92" rx="16" fill="#c98a5f" opacity="0.92"/>
+            <rect x="424" y="330" width="186" height="92" rx="16" fill="#3f7d7c" opacity="0.92"/>
+            <rect x="252" y="150" width="130" height="64" rx="22" fill="#e9c0a6"/>
+            <rect x="460" y="146" width="130" height="60" rx="20" fill="#cfe0da"/>
+            <rect x="180" y="480" width="20" height="34" rx="6" fill="#3a322c"/>
+            <rect x="600" y="480" width="20" height="34" rx="6" fill="#3a322c"/>
+          </g>
         </svg>
+        <div class="floating-chip chip-1">
+          <span class="chip-dot" style="--dot:#3f7d7c"></span>
+          <div><strong>Кресло «Скандинавия»</strong><span>34 900 ₽</span></div>
+        </div>
+        <div class="floating-chip chip-2">
+          <span class="chip-emoji">★</span>
+          <div><strong>4.9 / 127 отзывов</strong><span>Диван «Модерн»</span></div>
+        </div>
+        <div class="floating-discount">−18%</div>
       </div>
-      <div class="hero-card hero-card-mini">
-        <span class="mini-title">Диван «Модерн»</span>
-        <span class="mini-price">89 900 ₽</span>
-        <a href="{{ url_for('catalog') }}?category=divany" class="mini-link">Подробнее →</a>
-      </div>
+    </div>
+  </div>
+
+  <div class="hero-marquee">
+    <div class="marquee-track">
+      {% set words = ["Диваны", "Кресла", "Столы", "Кровати", "Шкафы", "Комоды", "Стеллажи", "Тумбы"] %}
+      {% for i in range(2) %}
+        {% for w in words %}
+          <span>{{ w }}</span><i>✦</i>
+        {% endfor %}
+      {% endfor %}
     </div>
   </div>
 </section>
 
 <section class="benefits">
   <div class="container benefits-grid">
-    <div class="benefit">
+    <div class="benefit reveal">
       <div class="benefit-icon">🚚</div>
       <h3>Бесплатная доставка</h3>
       <p>По Москве и области — при заказе от 30 000 ₽. До подъезда и до двери.</p>
     </div>
-    <div class="benefit">
+    <div class="benefit reveal reveal-delay-1">
       <div class="benefit-icon">🛠️</div>
       <h3>Гарантия до 3 лет</h3>
       <p>Собственное производство позволяет нам отвечать за качество.</p>
     </div>
-    <div class="benefit">
+    <div class="benefit reveal reveal-delay-2">
       <div class="benefit-icon">↩️</div>
       <h3>Возврат 14 дней</h3>
       <p>Не подошло — вернём деньги без лишних вопросов и бюрократии.</p>
     </div>
-    <div class="benefit">
+    <div class="benefit reveal reveal-delay-3">
       <div class="benefit-icon">🏠</div>
       <h3>Сборка и подъём</h3>
       <p>Мастера соберут мебель и уберут упаковку за собой.</p>
@@ -75,9 +108,9 @@
   </div>
 </section>
 
-<section class="section">
+<section class="section" id="catalog-section">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div>
         <span class="section-kicker">Каталог</span>
         <h2>Популярные категории</h2>
@@ -86,12 +119,15 @@
     </div>
     <div class="categories-grid">
       {% for cat in categories %}
-        <a href="{{ url_for('category', slug=cat['slug']) }}" class="category-card">
-          <img src="{{ url_for('static', filename='img/' + cat['image']) }}" alt="{{ cat['name'] }}" loading="lazy">
+        <a href="{{ url_for('category', slug=cat['slug']) }}" class="category-card reveal" style="--ri: {{ loop.index }}">
+          <div class="category-card-media">
+            <img src="{{ url_for('static', filename='img/' + cat['image']) }}" alt="{{ cat['name'] }}" loading="lazy">
+            <span class="category-arrow">→</span>
+          </div>
           <div class="category-card-body">
             <h3>{{ cat['name'] }}</h3>
             <p>{{ cat['description'] }}</p>
-            <span class="category-link">Перейти →</span>
+            <span class="category-link">Перейти в категорию</span>
           </div>
         </a>
       {% endfor %}
@@ -99,25 +135,144 @@
   </div>
 </section>
 
-<section class="section section-tinted">
+<section class="section section-dark lookbook-section" id="interiors">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head light reveal">
       <div>
-        <span class="section-kicker">Выбор клиентов</span>
-        <h2>Хиты продаж</h2>
+        <span class="section-kicker promo-kicker">Вдохновение</span>
+        <h2>Интерьеры, которые мы создали</h2>
       </div>
-      <a href="{{ url_for('catalog') }}?sort=popular" class="btn btn-ghost btn-sm">Смотреть все →</a>
+      <p class="section-sub">Готовые решения для гостиной, спальни и столовой — берите целиком или понравившуюся деталь.</p>
     </div>
-    <div class="products-grid">
-      {% set products = featured %}
-      {% include "_product_card.html" %}
+
+    <div class="lookbook-grid">
+      <a href="{{ url_for('catalog') }}?category=divany" class="lookbook-card lookbook-wide reveal" style="--ri: 1">
+        <svg viewBox="0 0 800 620">
+          <defs>
+            <linearGradient id="lb1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e6d3c1"/><stop offset="100%" stop-color="#caa37e"/></linearGradient>
+          </defs>
+          <rect width="800" height="620" fill="url(#lb1)"/>
+          <rect x="0" y="0" width="800" height="300" fill="#f2ead9" opacity="0.5"/>
+          <rect x="60" y="420" width="230" height="14" rx="7" fill="#5a5148"/>
+          <rect x="100" y="300" width="160" height="120" rx="16" fill="#5a5148"/>
+          <rect x="100" y="240" width="160" height="70" rx="16" fill="#5a5148"/>
+          <rect x="620" y="300" width="160" height="130" rx="16" fill="#5a5148"/>
+          <rect x="620" y="240" width="160" height="70" rx="16" fill="#5a5148"/>
+          <rect x="330" y="360" width="140" height="170" rx="14" fill="#6b5f53"/>
+          <rect x="352" y="382" width="52" height="120" rx="8" fill="#3f7d7c" opacity="0.85"/>
+          <rect x="414" y="382" width="52" height="120" rx="8" fill="#c98a5f" opacity="0.85"/>
+          <rect x="300" y="330" width="200" height="12" rx="6" fill="#c98a5f"/>
+          <rect x="60" y="210" width="120" height="120" rx="14" fill="#c98a5f" opacity="0.35"/>
+        </svg>
+        <div class="lookbook-overlay">
+          <span>Гостиная</span>
+          <h3>Диван + кресла<br>в тёплых тонах</h3>
+          <span class="lookbook-link">Смотреть диваны →</span>
+        </div>
+      </a>
+
+      <a href="{{ url_for('catalog') }}?category=krovati" class="lookbook-card reveal" style="--ri: 2">
+        <svg viewBox="0 0 400 620">
+          <defs>
+            <linearGradient id="lb2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#cfd9d8"/><stop offset="100%" stop-color="#97afae"/></linearGradient>
+          </defs>
+          <rect width="400" height="620" fill="url(#lb2)"/>
+          <rect x="0" y="0" width="400" height="280" fill="#eef1ec" opacity="0.55"/>
+          <rect x="40" y="250" width="320" height="60" rx="14" fill="#3f7d7c" opacity="0.8"/>
+          <rect x="40" y="310" width="320" height="170" rx="18" fill="#5a5148"/>
+          <rect x="58" y="322" width="284" height="130" rx="12" fill="#f3ede4"/>
+          <rect x="60" y="308" width="120" height="56" rx="16" fill="#e9c0a6"/>
+          <rect x="196" y="308" width="120" height="52" rx="16" fill="#cfe0da"/>
+          <rect x="300" y="318" width="70" height="36" rx="12" fill="#3f7d7c" opacity="0.6"/>
+          <rect x="60" y="480" width="20" height="28" rx="6" fill="#3a322c"/>
+          <rect x="320" y="480" width="20" height="28" rx="6" fill="#3a322c"/>
+        </svg>
+        <div class="lookbook-overlay">
+          <span>Спальня</span>
+          <h3>Уют в прохладных<br>оттенках</h3>
+          <span class="lookbook-link">Смотреть кровати →</span>
+        </div>
+      </a>
+
+      <a href="{{ url_for('catalog') }}?category=stoly" class="lookbook-card reveal" style="--ri: 3">
+        <svg viewBox="0 0 400 620">
+          <defs>
+            <linearGradient id="lb3" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#eadccb"/><stop offset="100%" stop-color="#c19b6f"/></linearGradient>
+          </defs>
+          <rect width="400" height="620" fill="url(#lb3)"/>
+          <rect x="0" y="0" width="400" height="280" fill="#f5efe2" opacity="0.5"/>
+          <rect x="40" y="250" width="320" height="16" rx="8" fill="#8a6a45"/>
+          <rect x="110" y="266" width="16" height="160" rx="6" fill="#5a5148"/>
+          <rect x="274" y="266" width="16" height="160" rx="6" fill="#5a5148"/>
+          <rect x="80" y="426" width="90" height="14" rx="7" fill="#5a5148"/>
+          <rect x="230" y="426" width="90" height="14" rx="7" fill="#5a5148"/>
+          <rect x="200" y="170" width="40" height="50" rx="8" fill="#4f6d5a"/>
+          <ellipse cx="220" cy="188" rx="22" ry="18" fill="#5f7d5c"/>
+          <rect x="150" y="220" width="90" height="14" rx="7" fill="#c98a5f" opacity="0.6"/>
+        </svg>
+        <div class="lookbook-overlay">
+          <span>Столовая</span>
+          <h3>Обеды за<br>массивом дуба</h3>
+          <span class="lookbook-link">Смотреть столы →</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="section-head">
+    <div class="section-head reveal">
+      <div>
+        <span class="section-kicker">Выбор клиентов</span>
+        <h2>Хиты продаж</h2>
+      </div>
+      <a href="{{ url_for('catalog') }}?sort=popular" class="btn btn-ghost btn-sm">Смотреть все →</a>
+    </div>
+    <div class="products-grid products-grid-featured">
+      {% set products = featured %}
+      {% include "_product_card.html" %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-tinted materials-section" id="materials">
+  <div class="container">
+    <div class="section-head reveal">
+      <div>
+        <span class="section-kicker">Качество</span>
+        <h2>Материалы, которые говорят сами за себя</h2>
+      </div>
+      <p class="section-sub">Мы выбираем только проверенные материалы и указываем их честно — никаких «эко-заменителей» без маркировки.</p>
+    </div>
+    <div class="materials-grid">
+      <div class="material-card reveal" style="--ri: 1">
+        <div class="material-swatch swatch-wood"></div>
+        <h3>Массив дуба и ясеня</h3>
+        <p>Каркасы и столешницы из цельной древесины. Каждое изделие имеет природный рисунок — двух одинаковых не бывает.</p>
+      </div>
+      <div class="material-card reveal" style="--ri: 2">
+        <div class="material-swatch swatch-fabric"></div>
+        <h3>Рогожка, велюр, твид</h3>
+        <p>Износостойкие ткани с плотностью от 60 000 циклов истирания. Съёмные чехлы можно стирать и менять.</p>
+      </div>
+      <div class="material-card reveal" style="--ri: 3">
+        <div class="material-swatch swatch-metal"></div>
+        <h3>Сталь и алюминий</h3>
+        <p>Металлокаркасы с порошковой окраской выдерживают до 150 кг и не скрипят годами.</p>
+      </div>
+      <div class="material-card reveal" style="--ri: 4">
+        <div class="material-swatch swatch-fill"></div>
+        <h3>ППУ повышенной плотности</h3>
+        <p>Наполнитель, который держит форму до 10 лет. Ортопедический эффект — без эффекта «ямы» в центре.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
       <div>
         <span class="section-kicker">Свежее поступление</span>
         <h2>Новинки</h2>
@@ -137,15 +292,23 @@
 
 <section class="promo">
   <div class="container promo-inner">
-    <div>
+    <div class="reveal">
       <span class="section-kicker promo-kicker">Акция месяца</span>
       <h2>Диван «Модерн» —<br>со скидкой 18%</h2>
       <p>До конца месяца трёхместный диван из новой коллекции доступен по специальной цене. Успейте обновить гостиную.</p>
+      <div class="promo-timer" data-timer="30">
+        <div class="timer-unit"><strong data-timer-days>30</strong><span>дней</span></div>
+        <span class="timer-sep">:</span>
+        <div class="timer-unit"><strong data-timer-hours>00</strong><span>часов</span></div>
+        <span class="timer-sep">:</span>
+        <div class="timer-unit"><strong data-timer-mins>00</strong><span>минут</span></div>
+      </div>
       <a href="{{ url_for('catalog') }}?category=divany" class="btn btn-primary btn-light">Выбрать диван</a>
     </div>
-    <div class="promo-visual">
+    <div class="promo-visual reveal reveal-delay-2">
       <span class="promo-discount">−18%</span>
       <svg viewBox="0 0 400 300">
+        <rect width="400" height="300" fill="#3a322c" rx="24"/>
         <rect x="40" y="150" width="320" height="80" rx="20" fill="#6b5f53"/>
         <rect x="40" y="60" width="320" height="100" rx="20" fill="#6b5f53"/>
         <rect x="22" y="100" width="30" height="130" rx="12" fill="#6b5f53"/>
@@ -159,14 +322,14 @@
 
 <section class="section">
   <div class="container testimonials">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div>
         <span class="section-kicker">Отзывы</span>
         <h2>Что говорят клиенты</h2>
       </div>
     </div>
     <div class="testimonials-grid">
-      <div class="testimonial">
+      <div class="testimonial reveal">
         <div class="stars">★★★★★</div>
         <p>«Заказывали угловой диван „Грэйс". Привезли за 5 дней, собрали за час. Качество на высоте, ткань плотная, механизм работает безупречно.»</p>
         <div class="testimonial-author">
@@ -174,7 +337,7 @@
           <div><strong>Анна М.</strong><span>Москва</span></div>
         </div>
       </div>
-      <div class="testimonial">
+      <div class="testimonial reveal reveal-delay-1">
         <div class="stars">★★★★★</div>
         <p>«Кровать „Винтаж" — мечта. Собрана идеально, ламели ровные, ничего не скрипит. Отдельное спасибо за аккуратную доставку в квартиру.»</p>
         <div class="testimonial-author">
@@ -182,7 +345,7 @@
           <div><strong>Дмитрий К.</strong><span>Санкт-Петербург</span></div>
         </div>
       </div>
-      <div class="testimonial">
+      <div class="testimonial reveal reveal-delay-2">
         <div class="stars">★★★★★</div>
         <p>«Покупали обеденный стол „Оак" и стулья. Настоящий массив, запах дерева, очень добротно. Однозначно рекомендую этот магазин.»</p>
         <div class="testimonial-author">
@@ -190,6 +353,35 @@
           <div><strong>Елена В.</strong><span>Казань</span></div>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-tinted" id="faq">
+  <div class="container faq-wrap">
+    <div class="section-head reveal">
+      <div>
+        <span class="section-kicker">Помощь</span>
+        <h2>Частые вопросы</h2>
+      </div>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-item">
+        <summary>Сколько времени занимает доставка?<span class="faq-toggle">+</span></summary>
+        <p>По Москве и области — 1–3 дня, по России — от 3 до 10 дней в зависимости от региона. Точную дату назовёт менеджер при подтверждении заказа.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Можно ли заказать сборку?<span class="faq-toggle">+</span></summary>
+        <p>Да. Сборка и занос в квартиру стоят от 1 500 ₽ и выполняются нашими мастерами. Стоимость зависит от модели и этажа.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Что будет, если мебель не подойдёт?<span class="faq-toggle">+</span></summary>
+        <p>В течение 14 дней после получения вы можете вернуть или обменять товар — без объяснения причин. Деньги вернём в течение 3–5 дней.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Как проверяется качество перед отправкой?<span class="faq-toggle">+</span></summary>
+        <p>Каждое изделие проходит трёхступенчатый контроль: на производстве, при комплектации и перед погрузкой. Мы фотографируем упаковку для истории заказа.</p>
+      </details>
     </div>
   </div>
 </section>

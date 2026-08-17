@@ -3,22 +3,42 @@
 
 {% block content %}
 
-<section class="page-hero">
-  <div class="container">
-    <nav class="breadcrumbs" aria-label="Хлебные крошки">
-      <a href="{{ url_for('index') }}">Главная</a>
-      <span>→</span>
-      <span class="current">Каталог</span>
-      {% if category_title %}<span>→</span><span class="current">{{ category_title }}</span>{% endif %}
-    </nav>
-    <h1>{% if category_title %}{{ category_title }}{% else %}Каталог мебели{% endif %}</h1>
-    {% if category_title %}
-      <p class="page-hero-sub">{{ total }} товар{{ total | plural_ru }} в категории</p>
-    {% else %}
+{% if category_title %}
+  {% set active_cat = namespace(found=None) %}
+  {% for cat in categories %}{% if cat['slug'] == active_category %}{% set active_cat.found = cat %}{% endif %}{% endfor %}
+  {% set active_cat = active_cat.found %}
+  <section class="cat-banner">
+    <div class="cat-banner-art">
+      {% if active_cat %}
+        <img src="{{ url_for('static', filename='img/' + active_cat['image']) }}" alt="{{ active_cat['name'] }}" loading="lazy">
+      {% endif %}
+    </div>
+    <div class="container cat-banner-inner">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="{{ url_for('index') }}">Главная</a>
+        <span>→</span>
+        <a href="{{ url_for('catalog') }}">Каталог</a>
+        <span>→</span>
+        <span class="current">{{ category_title }}</span>
+      </nav>
+      <span class="cat-banner-kicker">{{ total }} товар{{ total | plural_ru }}</span>
+      <h1>{{ category_title }}</h1>
+      {% if active_cat %}<p>{{ active_cat['description'] }}</p>{% endif %}
+    </div>
+  </section>
+{% else %}
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Хлебные крошки">
+        <a href="{{ url_for('index') }}">Главная</a>
+        <span>→</span>
+        <span class="current">Каталог</span>
+      </nav>
+      <h1>Каталог мебели</h1>
       <p class="page-hero-sub">{{ total }} товар{{ total | plural_ru }} в нашем ассортименте</p>
-    {% endif %}
-  </div>
-</section>
+    </div>
+  </section>
+{% endif %}
 
 <section class="section catalog-section">
   <div class="container catalog-layout">
@@ -82,6 +102,7 @@
             </svg>
           </button>
         </form>
+
         <form method="get" action="{{ url_for('catalog') }}" class="sort-bar">
           <input type="hidden" name="category" value="{{ active_category }}">
           <input type="hidden" name="q" value="{{ q }}">
@@ -97,6 +118,15 @@
             <option value="name" {% if sort == 'name' %}selected{% endif %}>По алфавиту</option>
           </select>
         </form>
+
+        <div class="view-toggle" role="group" aria-label="Вид отображения">
+          <button class="view-btn active" data-view="grid" aria-label="Сетка" title="Сетка">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+          </button>
+          <button class="view-btn" data-view="list" aria-label="Список" title="Список">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
       </div>
 
       {% if q %}
@@ -105,7 +135,7 @@
         </div>
       {% endif %}
 
-      <div class="products-grid products-grid-catalog">
+      <div class="products-grid products-grid-catalog" id="productsGrid" data-view="grid">
         {% include "_product_card.html" %}
       </div>
     </div>

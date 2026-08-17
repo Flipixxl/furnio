@@ -1,5 +1,18 @@
 {% for p in products %}
-  <article class="product-card" data-category="{{ p['category_slug'] }}">
+  <article class="product-card reveal {% if p['is_featured'] and loop.index <= 2 %}featured{% endif %}"
+           data-category="{{ p['category_slug'] }}"
+           data-qv-id="{{ p['id'] }}"
+           data-qv-name="{{ p['name'] }}"
+           data-qv-cat="{{ p['category_name'] }}"
+           data-qv-price="{{ p['price'] }}"
+           data-qv-old="{{ p['old_price'] if p['old_price'] else '' }}"
+           data-qv-img="{{ url_for('static', filename='img/' + p['image']) }}"
+           data-qv-url="{{ url_for('product', slug=p['slug']) }}"
+           data-qv-desc="{{ p['description'] }}"
+           data-qv-mat="{{ p['material'] }}"
+           data-qv-dims="{{ p['dimensions'] }}"
+           data-qv-war="{{ p['warranty'] }}">
+
     <a href="{{ url_for('product', slug=p['slug']) }}" class="product-card-media">
       <img src="{{ url_for('static', filename='img/' + p['image']) }}" alt="{{ p['name'] }}" loading="lazy">
       <div class="product-badges">
@@ -15,10 +28,28 @@
       {% if p['is_featured'] %}
         <span class="badge badge-featured">Хит</span>
       {% endif %}
+
+      <div class="quick-actions">
+        <button type="button" class="qa-btn" data-quick-view
+                {% if p['stock'] == 0 %}disabled{% endif %}
+                aria-label="Быстрый просмотр — {{ p['name'] }}" title="Быстрый просмотр">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20">
+            <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+          <span>Быстрый просмотр</span>
+        </button>
+      </div>
     </a>
+
     <div class="product-card-body">
-      <span class="product-category">{{ p['category_name'] }}</span>
+      <div class="product-card-top">
+        <span class="product-category">{{ p['category_name'] }}</span>
+        <span class="product-stock {% if p['stock'] == 0 %}out{% endif %}">
+          <i></i>{% if p['stock'] > 0 %}в наличии{% else %}нет в наличии{% endif %}
+        </span>
+      </div>
       <h3><a href="{{ url_for('product', slug=p['slug']) }}">{{ p['name'] }}</a></h3>
+      <p class="product-excerpt">{{ p['description'][:110] }}…</p>
       <div class="product-meta">
         <span>{{ p['material'] }}</span>
         <span>{{ p['dimensions'].split(' × ')[0] }}</span>
@@ -30,24 +61,33 @@
           {% endif %}
           <span class="price-current">{{ p['price'] | money }}</span>
         </div>
-        <form method="post" action="{{ url_for('cart_add', product_id=p['id']) }}" class="add-form" data-add-form>
-          <input type="hidden" name="next" value="{{ request.full_path or url_for('catalog') }}">
-          <button type="submit" class="btn-icon" {% if p['stock'] == 0 %}disabled{% endif %} aria-label="Добавить в корзину"
-                  title="{% if p['stock'] == 0 %}Нет в наличии{% else %}Добавить в корзину{% endif %}">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
-              <path d="M6 7h12l1 13H5L6 7Z" stroke-linejoin="round"/>
-              <path d="M9 10V6a3 3 0 0 1 6 0v4"/>
+        <div class="card-actions">
+          <button type="button" class="btn-icon" data-quick-view
+                  {% if p['stock'] == 0 %}disabled{% endif %}
+                  aria-label="Быстрый просмотр {{ p['name'] }}" title="Быстрый просмотр">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="19" height="19">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/>
             </svg>
           </button>
-        </form>
+          <form method="post" action="{{ url_for('cart_add', product_id=p['id']) }}" class="add-form" data-add-form>
+            <input type="hidden" name="next" value="{{ request.full_path or url_for('catalog') }}">
+            <button type="submit" class="btn-icon" {% if p['stock'] == 0 %}disabled{% endif %} aria-label="Добавить в корзину"
+                    title="{% if p['stock'] == 0 %}Нет в наличии{% else %}Добавить в корзину{% endif %}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20">
+                <path d="M6 7h12l1 13H5L6 7Z" stroke-linejoin="round"/>
+                <path d="M9 10V6a3 3 0 0 1 6 0v4"/>
+              </svg>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </article>
 {% else %}
   <div class="empty-state">
     <div class="empty-icon">🛋️</div>
-    <h3>Товаров пока нет</h3>
-    <p>Загляните позже или посмотрите другие категории.</p>
-    <a href="{{ url_for('catalog') }}" class="btn btn-primary">В каталог</a>
+    <h3>Ничего не найдено</h3>
+    <p>Попробуйте изменить запрос или сбросить фильтры.</p>
+    <a href="{{ url_for('catalog') }}" class="btn btn-primary">Сбросить фильтры</a>
   </div>
 {% endfor %}

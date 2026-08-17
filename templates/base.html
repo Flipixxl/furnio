@@ -7,7 +7,7 @@
   <title>{% block title %}Furnio — мебель для дома{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>🛋️</text></svg>">
 </head>
@@ -63,6 +63,20 @@
   </main>
 
   <footer class="site-footer">
+    <div class="footer-cta">
+      <div class="container footer-cta-inner">
+        <div>
+          <span class="section-kicker promo-kicker">Рассылка</span>
+          <h3>Идеи и скидки — раз в месяц</h3>
+          <p>Подборки интерьеров, новые коллекции и персональные промокоды. Без спама.</p>
+        </div>
+        <form class="newsletter" id="newsletterForm">
+          <input type="email" required placeholder="Ваш email" aria-label="Email">
+          <button type="submit" class="btn btn-primary btn-light">Подписаться</button>
+        </form>
+      </div>
+    </div>
+
     <div class="container footer-grid">
       <div class="footer-col">
         <a href="{{ url_for('index') }}" class="logo footer-logo">
@@ -110,6 +124,42 @@
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Быстрый просмотр товара -->
+  <div class="qv-modal" id="qvModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="qv-backdrop" data-qv-close></div>
+    <div class="qv-panel">
+      <button class="qv-close" data-qv-close aria-label="Закрыть">✕</button>
+      <div class="qv-content">
+        <div class="qv-media"><img src="" alt="" id="qvImage"></div>
+        <div class="qv-body">
+          <span class="product-category" id="qvCategory"></span>
+          <h3 id="qvTitle"></h3>
+          <div class="qv-price">
+            <span class="price-old" id="qvOld"></span>
+            <span class="price-current" id="qvPrice"></span>
+          </div>
+          <p class="product-description" id="qvDesc"></p>
+          <div class="specs qv-specs">
+            <div class="spec-row"><span>Материал</span><strong id="qvMaterial"></strong></div>
+            <div class="spec-row"><span>Габариты</span><strong id="qvDims"></strong></div>
+            <div class="spec-row"><span>Гарантия</span><strong id="qvWarranty"></strong></div>
+          </div>
+          <form method="post" id="qvForm" data-add-form>
+            <div class="buy-row">
+              <div class="qty-stepper">
+                <button type="button" data-qty-minus aria-label="Уменьшить">−</button>
+                <input type="number" name="qty" value="1" min="1" max="99" data-qty-input>
+                <button type="button" data-qty-plus aria-label="Увеличить">+</button>
+              </div>
+              <button type="submit" class="btn btn-primary btn-lg" id="qvSubmit">В корзину</button>
+            </div>
+            <a href="" class="btn btn-ghost btn-block" id="qvLink">Перейти к товару →</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="{{ url_for('static', filename='app.js') }}"></script>
   {% block scripts %}{% endblock %}
