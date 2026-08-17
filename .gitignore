@@ -4,8 +4,8 @@
 # Runtime data (SQLite DB is recreated on startup)
 instance/
 
-# Generated images (recreated on startup)
-static/img/
+# Generated SVGs (recreated on startup); real product photos in static/img/products/ are committed
+static/img/*.svg
 
 # Python cache
 __pycache__/

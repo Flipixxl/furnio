@@ -490,6 +490,9 @@ def generate_images(app):
         cat = next(c for c in CATEGORIES if c["slug"] == p["category"])
         furniture = cat["slug"]
         slug = slugify(p["name"])
+        image = f"products/{slug}.jpg"
+        if os.path.exists(os.path.join(img_dir, image)):
+            continue
         svg = generate_svg(slug, cat["color"], cat["color2"], furniture, p["name"])
         image = f"{slug}.svg"
         with open(os.path.join(img_dir, image), "w", encoding="utf-8") as f:
@@ -521,10 +524,15 @@ def ensure_db(app):
                 (
                     cat_id, p["name"], slug, p["description"], p["material"],
                     p["dimensions"], p["warranty"], p["price"], p.get("old_price"),
-                    p["stock"], p.get("featured", 0), f"{slug}.svg",
+                    p["stock"], p.get("featured", 0), f"products/{slug}.jpg",
                     created.isoformat(timespec="seconds"),
                 ),
             )
         db.commit()
+    for p in PRODUCTS:
+        slug = slugify(p["name"])
+        cur = db.execute("UPDATE products SET image = ? WHERE slug = ?",
+                         (f"products/{slug}.jpg", slug))
+    db.commit()
     generate_images(app)
     db.close()
