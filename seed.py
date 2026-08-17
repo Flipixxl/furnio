@@ -1,4 +1,4 @@
-import os
+﻿import os
 import re
 import sqlite3
 from datetime import datetime, timedelta
@@ -60,7 +60,7 @@ CATEGORIES = [
         "name": "Диваны",
         "slug": "divany",
         "description": "Комфортные диваны на каждый день и для гостиной",
-        "image": "category-divany.svg",
+        "image": "categories/divany.jpg",
         "color": "#b5713c",
         "color2": "#d99a62",
     },
@@ -68,7 +68,7 @@ CATEGORIES = [
         "name": "Кресла",
         "slug": "kresla",
         "description": "Уютные кресла и реклайнеры для отдыха",
-        "image": "category-kresla.svg",
+        "image": "categories/kresla.jpg",
         "color": "#3f7d7c",
         "color2": "#5fa8a6",
     },
@@ -76,7 +76,7 @@ CATEGORIES = [
         "name": "Столы",
         "slug": "stoly",
         "description": "Обеденные, журнальные и рабочие столы",
-        "image": "category-stoly.svg",
+        "image": "categories/stoly.jpg",
         "color": "#8a6a45",
         "color2": "#b0885d",
     },
@@ -84,7 +84,7 @@ CATEGORIES = [
         "name": "Кровати",
         "slug": "krovati",
         "description": "Кровати и основания с ортопедическими ламелями",
-        "image": "category-krovati.svg",
+        "image": "categories/krovati.jpg",
         "color": "#5b5f97",
         "color2": "#7c81bd",
     },
@@ -92,7 +92,7 @@ CATEGORIES = [
         "name": "Шкафы",
         "slug": "shkafy",
         "description": "Шкафы-купе, гардеробные и комоды",
-        "image": "category-shkafy.svg",
+        "image": "categories/shkafy.jpg",
         "color": "#4f6d5a",
         "color2": "#6f917c",
     },
@@ -100,7 +100,7 @@ CATEGORIES = [
         "name": "Полки и комоды",
         "slug": "polki",
         "description": "Стеллажи, полки и тумбы для порядка в доме",
-        "image": "category-polki.svg",
+        "image": "categories/polki.jpg",
         "color": "#8b5f7a",
         "color2": "#aa7c98",
     },
@@ -485,11 +485,14 @@ def generate_images(app):
     os.makedirs(img_dir, exist_ok=True)
     written = []
     for cat in CATEGORIES:
+        if os.path.exists(os.path.join(img_dir, cat["image"])):
+            continue
         furniture = cat["slug"]
         if furniture not in DRAW_FUNCS:
             furniture = "stoly"
         svg = generate_svg(cat["slug"], cat["color"], cat["color2"], furniture, cat["name"])
         path = os.path.join(img_dir, cat["image"])
+        os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "w", encoding="utf-8") as f:
             f.write(svg)
         written.append(cat["image"])
@@ -540,6 +543,9 @@ def ensure_db(app):
         slug = slugify(p["name"])
         cur = db.execute("UPDATE products SET image = ? WHERE slug = ?",
                          (f"products/{slug}.jpg", slug))
+    for cat in CATEGORIES:
+        cur = db.execute("UPDATE categories SET image = ? WHERE slug = ?",
+                         (cat["image"], cat["slug"]))
     db.commit()
     generate_images(app)
     db.close()

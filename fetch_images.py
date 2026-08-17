@@ -1,7 +1,10 @@
-"""Финальное скачивание реальных фото товаров.
+"""Скачивание реальных фото для портфолио-сайта Furnio.
 
-Берёт конкретные файлы Wikimedia Commons по точным названиям и сохраняет
-их как static/img/products/<slug>.jpg (имена как у товаров в seed.py).
+Берёт конкретные файлы Wikimedia Commons по точным названиям (свободная лицензия)
+и сохраняет их:
+  - static/img/products/<slug>.jpg   — фото товаров
+  - static/img/categories/<slug>.jpg — фото категорий
+  - static/img/lookbook/<name>.jpg   — фото интерьеров (блок «Интерьеры»)
 """
 
 import json
@@ -16,7 +19,7 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(BASE, "static", "img", "products")
+IMG = os.path.join(BASE, "static", "img")
 
 UA = {"User-Agent": "FurnioPortfolio/1.0 (portfolio project; contact: hello@furnio.ru)"}
 
@@ -78,6 +81,33 @@ MAP = [
 ]
 
 
+CATS = [
+    # (slug категории, точное название файла на Commons)
+    ("divany",
+     "File:Modern living room with stylish furniture and a view of the outdoors in a cozy apartment setting.jpg"),
+    ("kresla",
+     "File:EFTA00002057 - Cozy living room with stone walls a fireplace and modern furniture featuring a wooden coffee table and plush armchairs.jpg"),
+    ("stoly",
+     "File:A modern dinner set, table and chairs in a beach house, Auckland - 1028.jpg"),
+    ("krovati",
+     "File:Modern bedroom design in a stylish hotel room featuring geometric patterns and soft linens.jpg"),
+    ("shkafy",
+     "File:Elfa storage system behind mirrored doors in bedroom.jpg"),
+    ("polki",
+     "File:Interior of Willistead Manor (bookshelf), Windsor, Ontario, 2025-06-07.jpg"),
+]
+
+LOOKBOOK = [
+    # (имя карточки, точное название файла на Commons)
+    ("living-room",
+     "File:Gene Zema house showing living room, Seattle (4669580613).jpg"),
+    ("bedroom",
+     "File:Hôtel Château Cran Chaud Chicoutimi - Suite avec lit King.jpg"),
+    ("dining",
+     "File:Modern kitchen and dining area in a bright apartment on a sunny day with simple decor and furniture.jpg"),
+]
+
+
 def slugify(text):
     text = text.lower().strip()
     text = re.sub(r"[«»\"']", "", text)
@@ -106,28 +136,37 @@ def get_info(title, retries=3):
 
 
 def main():
-    os.makedirs(OUT, exist_ok=True)
+    groups = [
+        (os.path.join(IMG, "products"), "products", MAP,
+         lambda name: slugify(name) + ".jpg"),
+        (os.path.join(IMG, "categories"), "categories", CATS,
+         lambda slug: slug + ".jpg"),
+        (os.path.join(IMG, "lookbook"), "lookbook", LOOKBOOK,
+         lambda name: name + ".jpg"),
+    ]
     ok, fail = 0, 0
-    for name, title in MAP:
-        slug = slugify(name)
-        path = os.path.join(OUT, slug + ".jpg")
-        try:
-            info = get_info(title)
-            if not info or info.get("mime") != "image/jpeg":
-                print(f"SKIP {slug}: bad info")
+    for out_dir, label, entries, name_fn in groups:
+        os.makedirs(out_dir, exist_ok=True)
+        for name, title in entries:
+            fname = name_fn(name)
+            path = os.path.join(out_dir, fname)
+            try:
+                info = get_info(title)
+                if not info or info.get("mime") != "image/jpeg":
+                    print(f"SKIP {label}/{fname}: bad info")
+                    fail += 1
+                    continue
+                url = info.get("thumburl") or info.get("url")
+                req = urllib.request.Request(url, headers=UA)
+                with urllib.request.urlopen(req, timeout=60) as r, open(path, "wb") as f:
+                    f.write(r.read())
+                print(f"OK {label}/{fname}  ({info.get('width')}px)  <- {title}")
+                ok += 1
+            except Exception as e:
+                print(f"FAIL {label}/{fname}: {type(e).__name__}: {e}")
                 fail += 1
-                continue
-            url = info.get("thumburl") or info.get("url")
-            req = urllib.request.Request(url, headers=UA)
-            with urllib.request.urlopen(req, timeout=60) as r, open(path, "wb") as f:
-                f.write(r.read())
-            print(f"OK {slug}.jpg  ({info.get('width')}px)  <- {title}")
-            ok += 1
-        except Exception as e:
-            print(f"FAIL {slug}: {type(e).__name__}: {e}")
-            fail += 1
-        time.sleep(0.6)
-    print(f"\nDone: {ok} ok, {fail} fail -> {OUT}")
+            time.sleep(0.6)
+    print(f"\nDone: {ok} ok, {fail} fail -> {IMG}")
 
 
 if __name__ == "__main__":
