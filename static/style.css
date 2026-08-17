@@ -25,9 +25,9 @@
   --shadow-md: 0 10px 30px rgba(43, 38, 32, 0.1);
   --shadow-lg: 0 22px 60px rgba(43, 38, 32, 0.18);
 
-  --font-body: "Manrope", "Segoe UI", system-ui, sans-serif;
-  --font-head: "Playfair Display", "Georgia", serif;
-  --font-display: "Unbounded", "Manrope", sans-serif;
+  --font-body: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --font-head: Georgia, "Times New Roman", "Palatino Linotype", serif;
+  --font-display: system-ui, -apple-system, "Segoe UI", "Arial Black", Arial, sans-serif;
 
   --container: 1280px;
 }
