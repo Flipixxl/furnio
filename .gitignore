@@ -17,6 +17,8 @@ tools/
 cloudflared.log
 cloudflared.out.log
 public_url.txt
+cf_http2.log
+cf_http2.out.log
 
 # IDE / OS
 .vscode/

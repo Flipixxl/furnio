@@ -63,15 +63,15 @@
         <form method="post" action="{{ url_for('cart_add', product_id=product['id']) }}" class="buy-row" data-add-form>
           <div class="qty-stepper">
             <button type="button" data-qty-minus aria-label="Уменьшить">−</button>
-            <input type="number" name="qty" value="1" min="1" max="99" data-qty-input>
+            <input type="number" name="qty" value="1" min="1" max="{{ product['stock'] if product['stock'] > 0 else 1 }}" data-qty-input>
             <button type="button" data-qty-plus aria-label="Увеличить">+</button>
           </div>
           <button type="submit" class="btn btn-primary btn-lg" {% if product['stock'] == 0 %}disabled{% endif %}>
             {% if product['stock'] == 0 %}Нет в наличии{% else %}В корзину{% endif %}
           </button>
-          <a href="{{ url_for('checkout') }}" class="btn btn-ghost btn-lg" {% if product['stock'] == 0 %}aria-disabled="true"{% endif %}>
-            Купить в 1 клик
-          </a>
+          {% if product['stock'] > 0 %}
+          <a href="{{ url_for('checkout') }}" class="btn btn-ghost btn-lg">Купить в 1 клик</a>
+          {% endif %}
         </form>
 
         <ul class="product-perks">

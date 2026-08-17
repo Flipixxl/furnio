@@ -66,12 +66,21 @@ def close_db(exc):
         db.close()
 
 
+def _safe_next(url):
+    if url and url.startswith("/") and not url.startswith("//"):
+        return url
+    return None
+
+
 def cart_contents():
     cart = session.get("cart", {})
     items = []
     total = 0
     for product_id, qty in cart.items():
-        product = seed.get_product(get_db(), int(product_id))
+        try:
+            product = seed.get_product(get_db(), int(product_id))
+        except (TypeError, ValueError):
+            continue
         if product is None or qty <= 0:
             continue
         subtotal = product["price"] * qty
@@ -201,17 +210,18 @@ def cart_add(product_id):
     product = seed.get_product(db, product_id)
     if product is None:
         abort(404)
-    qty = 1
     try:
         qty = max(1, min(int(request.form.get("qty", 1)), 99))
     except ValueError:
         qty = 1
     cart = dict(session.get("cart", {}))
-    cart[str(product_id)] = cart.get(str(product_id), 0) + qty
+    if product["stock"] > 0:
+        existing = cart.get(str(product_id), 0)
+        cart[str(product_id)] = min(existing + qty, product["stock"])
     session["cart"] = cart
     if request.headers.get("X-Requested-With") == "fetch":
-        return {"ok": True, "cart_count": cart_count()}
-    next_url = request.form.get("next") or request.referrer or url_for("cart")
+        return {"ok": product["stock"] > 0, "cart_count": cart_count()}
+    next_url = _safe_next(request.form.get("next")) or _safe_next(request.referrer) or url_for("cart")
     return redirect(next_url)
 
 
@@ -221,6 +231,10 @@ def cart_update(product_id):
         qty = max(0, min(int(request.form.get("qty", 1)), 99))
     except ValueError:
         qty = 0
+    db = get_db()
+    product = seed.get_product(db, product_id)
+    if product and product["stock"] > 0:
+        qty = min(qty, product["stock"])
     cart = dict(session.get("cart", {}))
     if qty == 0:
         cart.pop(str(product_id), None)
@@ -243,7 +257,10 @@ def checkout():
     items, total = cart_contents()
     if not items:
         return redirect(url_for("catalog"))
-    return render_template("checkout.html", items=items, total=total)
+    return render_template(
+        "checkout.html", items=items, total=total,
+        name="", phone="", email="", address="", comment="", payment="card",
+    )
 
 
 @app.post("/checkout")
@@ -261,7 +278,11 @@ def checkout_submit():
 
     if not name or not phone or not address:
         flash("Пожалуйста, заполните имя, телефон и адрес доставки.", "error")
-        return render_template("checkout.html", items=items, total=total)
+        return render_template(
+            "checkout.html", items=items, total=total,
+            name=name, phone=phone, email=email, address=address,
+            comment=comment, payment=payment,
+        )
 
     db = get_db()
     order_id = seed.create_order(

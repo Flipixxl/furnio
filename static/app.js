@@ -108,6 +108,8 @@
       if (data.ok) {
         updateCartCount(data.cart_count);
         showToast(message || "Товар добавлен в корзину 🛒");
+      } else {
+        showToast("Товар временно недоступен");
       }
     } catch (err) {
       showToast("Не удалось добавить товар. Попробуйте ещё раз.");
@@ -217,6 +219,11 @@
 
     const tick = () => {
       let diff = Math.max(0, end - Date.now());
+      if (diff === 0) {
+        end = Date.now() + 30 * 24 * 3600 * 1000;
+        localStorage.setItem(key, end);
+        diff = 30 * 24 * 3600 * 1000;
+      }
       const days = Math.floor(diff / (24 * 3600 * 1000));
       diff -= days * 24 * 3600 * 1000;
       const hours = Math.floor(diff / (3600 * 1000));

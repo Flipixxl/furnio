@@ -53,7 +53,7 @@
 
         <aside class="cart-summary">
           <h3>Итого</h3>
-          <div class="summary-row"><span>Товары ({{ items | length }} шт.)</span><span>{{ items | length }} поз.</span></div>
+          <div class="summary-row"><span>Товары ({{ items | sum(attribute='qty') }} шт.)</span><span>{{ items | length }} поз.</span></div>
           <div class="summary-row"><span>Доставка</span><strong>Бесплатно</strong></div>
           <div class="summary-row"><span>Сборка</span><span>0 ₽</span></div>
           <div class="summary-total">
