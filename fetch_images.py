@@ -107,6 +107,11 @@ LOOKBOOK = [
      "File:Modern kitchen and dining area in a bright apartment on a sunny day with simple decor and furniture.jpg"),
 ]
 
+HERO = [
+    ("hero.jpg",
+     "File:Cozy living room setting with a yellow sofa and a coffee table adorned with cups and a flower pot.jpg"),
+]
+
 
 def slugify(text):
     text = text.lower().strip()
@@ -143,6 +148,7 @@ def main():
          lambda slug: slug + ".jpg"),
         (os.path.join(IMG, "lookbook"), "lookbook", LOOKBOOK,
          lambda name: name + ".jpg"),
+        (IMG, "hero", HERO, lambda name: name),
     ]
     ok, fail = 0, 0
     for out_dir, label, entries, name_fn in groups:

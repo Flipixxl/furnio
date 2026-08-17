@@ -30,34 +30,7 @@
     <div class="hero-visual reveal reveal-delay-2">
       <div class="hero-stage">
         <div class="hero-stage-bg"></div>
-        <svg viewBox="0 0 800 620" class="hero-img">
-          <defs>
-            <linearGradient id="heroBg" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#efe2d3"/>
-              <stop offset="100%" stop-color="#d9b48f"/>
-            </linearGradient>
-            <linearGradient id="wallShade" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stop-color="#f6efe6"/>
-              <stop offset="100%" stop-color="#e9dbca"/>
-            </linearGradient>
-          </defs>
-          <rect width="800" height="620" fill="url(#heroBg)" rx="36"/>
-          <rect x="0" y="0" width="800" height="330" fill="url(#wallShade)" opacity="0.5" rx="36"/>
-          <rect x="70" y="250" width="240" height="6" rx="3" fill="#c98a5f" opacity="0.5"/>
-          <rect x="600" y="220" width="130" height="6" rx="3" fill="#3f7d7c" opacity="0.5"/>
-          <g>
-            <rect x="150" y="360" width="500" height="120" rx="26" fill="#5a5148"/>
-            <rect x="150" y="200" width="500" height="180" rx="26" fill="#5a5148"/>
-            <rect x="96" y="270" width="62" height="212" rx="22" fill="#5a5148"/>
-            <rect x="642" y="270" width="62" height="212" rx="22" fill="#5a5148"/>
-            <rect x="190" y="330" width="218" height="92" rx="16" fill="#c98a5f" opacity="0.92"/>
-            <rect x="424" y="330" width="186" height="92" rx="16" fill="#3f7d7c" opacity="0.92"/>
-            <rect x="252" y="150" width="130" height="64" rx="22" fill="#e9c0a6"/>
-            <rect x="460" y="146" width="130" height="60" rx="20" fill="#cfe0da"/>
-            <rect x="180" y="480" width="20" height="34" rx="6" fill="#3a322c"/>
-            <rect x="600" y="480" width="20" height="34" rx="6" fill="#3a322c"/>
-          </g>
-        </svg>
+        <img src="{{ url_for('static', filename='img/hero.jpg') }}" alt="Живая гостиная в тёплых тонах — диван, кресла и журнальный столик" class="hero-img">
         <div class="floating-chip chip-1">
           <span class="chip-dot" style="--dot:#3f7d7c"></span>
           <div><strong>Кресло «Скандинавия»</strong><span>34 900 ₽</span></div>
